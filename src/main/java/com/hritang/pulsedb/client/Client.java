@@ -39,7 +39,18 @@ public class Client {
 
                 System.out.println(response);
 
+                if ("BYE".equals(response)) {
+
+                    System.out.println("Disconnected from PulseDB.");
+
+                    break;
+                }
+
             }
+            scanner.close();
+            reader.close();
+            writer.close();
+            socket.close();
 
         } catch (IOException e) {
 
@@ -48,5 +59,6 @@ public class Client {
         }
 
     }
+
 
 }

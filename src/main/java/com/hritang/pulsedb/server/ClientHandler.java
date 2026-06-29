@@ -39,7 +39,13 @@ public class ClientHandler implements Runnable {
 
             while ((input = reader.readLine()) != null) {
 
-                writer.println(dispatcher.execute(parser.parse(input)));
+                String response = dispatcher.execute(parser.parse(input));
+
+                writer.println(response);
+
+                if ("BYE".equals(response)) {
+                    break;
+                }
 
             }
 

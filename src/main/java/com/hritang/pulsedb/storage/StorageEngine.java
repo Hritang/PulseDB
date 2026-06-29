@@ -39,4 +39,14 @@ public class StorageEngine {
         return storage.keySet();
     }
 
+    public boolean update(String key, String value) {
+
+        if (!storage.containsKey(key)) {
+            return false;
+        }
+
+        storage.put(key, value);
+        return true;
+    }
+
 }

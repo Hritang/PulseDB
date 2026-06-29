@@ -9,6 +9,7 @@ public enum CommandType {
     KEYS,
     COUNT,
     CLEAR,
+    EXISTS,
     SAVE,
     LOAD,
     EXIT

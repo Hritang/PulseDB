@@ -49,6 +49,23 @@ public class CommandDispatcher {
 
                 return "Database Cleared";
 
+            case UPDATE:
+
+                return storage.update(request.getKey(), request.getValue())
+                        ? "Updated"
+                        : "Key Not Found";
+
+            case EXISTS:
+
+                return storage.containsKey(request.getKey())
+                        ? "true"
+                        : "false";
+
+
+            case EXIT:
+
+                return "BYE";
+
             default:
 
                 return "Unsupported Command";
