@@ -128,6 +128,21 @@ PulseDB uses a lightweight Write-Ahead Log (WAL). Every mutating command is appe
 * Unit and integration tests
 
 ---
+## Screenshots
+
+### Client
+
+![Client](screenshots/client.png)
+
+### Server
+
+![Server](screenshots/server.png)
+
+### Write-Ahead Log
+
+![Write-Ahead Log](screenshots/wal.png)
+
+---
 
 ## Author
 
