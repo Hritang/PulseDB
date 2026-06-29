@@ -2,6 +2,7 @@ package com.hritang.pulsedb.server;
 
 import com.hritang.pulsedb.command.CommandDispatcher;
 import com.hritang.pulsedb.command.RequestParser;
+import com.hritang.pulsedb.persistence.WriteAheadLog;
 import com.hritang.pulsedb.storage.StorageEngine;
 
 import java.io.*;
@@ -14,23 +15,29 @@ public class ClientHandler implements Runnable {
     private final CommandDispatcher dispatcher;
 
     public ClientHandler(Socket clientSocket,
-                         StorageEngine storageEngine) {
+                         StorageEngine storageEngine,
+                         WriteAheadLog wal) {
 
         this.clientSocket = clientSocket;
         this.parser = new RequestParser();
-        this.dispatcher = new CommandDispatcher(storageEngine);
+        this.dispatcher = new CommandDispatcher(storageEngine, wal);
+
     }
 
     @Override
     public void run() {
 
         try (
+
                 BufferedReader reader =
                         new BufferedReader(
                                 new InputStreamReader(clientSocket.getInputStream()));
 
                 PrintWriter writer =
-                        new PrintWriter(clientSocket.getOutputStream(), true)
+                        new PrintWriter(
+                                clientSocket.getOutputStream(),
+                                true)
+
         ) {
 
             writer.println("Welcome to PulseDB!");
@@ -39,7 +46,10 @@ public class ClientHandler implements Runnable {
 
             while ((input = reader.readLine()) != null) {
 
-                String response = dispatcher.execute(parser.parse(input));
+                String response =
+                        dispatcher.execute(
+                                parser.parse(input)
+                        );
 
                 writer.println(response);
 
