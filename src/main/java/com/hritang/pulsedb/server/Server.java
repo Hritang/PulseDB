@@ -1,6 +1,7 @@
 package com.hritang.pulsedb.server;
 
 import com.hritang.pulsedb.config.Constants;
+import com.hritang.pulsedb.storage.StorageEngine;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -8,8 +9,13 @@ import java.net.Socket;
 
 public class Server {
 
+    private final StorageEngine storageEngine;
     private ServerSocket serverSocket;
     private volatile boolean running;
+
+    public Server() {
+        this.storageEngine = new StorageEngine();
+    }
 
     public void start() {
 
@@ -43,11 +49,15 @@ public class Server {
 
                 Socket clientSocket = serverSocket.accept();
 
-                System.out.println(
-                        "Client connected from: "
-                                + clientSocket.getInetAddress()
-                                + ":" + clientSocket.getPort()
-                );
+                ClientHandler handler =
+                        new ClientHandler(clientSocket, storageEngine);
+
+                Thread thread = new Thread(handler);
+
+                thread.start();
+
+                System.out.println("Client connected : "
+                        + clientSocket.getInetAddress());
 
                 // ClientHandler will be added in the next step.
 

@@ -2,8 +2,9 @@ package com.hritang.pulsedb.client;
 
 import com.hritang.pulsedb.config.Constants;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client {
 
@@ -15,11 +16,33 @@ public class Client {
 
             socket = new Socket("localhost", Constants.PORT);
 
-            System.out.println("Connected to PulseDB Server.");
+            BufferedReader reader =
+                    new BufferedReader(
+                            new InputStreamReader(socket.getInputStream()));
+
+            PrintWriter writer =
+                    new PrintWriter(socket.getOutputStream(), true);
+
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println(reader.readLine());
+
+            while (true) {
+
+                System.out.print("PulseDB > ");
+
+                String command = scanner.nextLine();
+
+                writer.println(command);
+
+                String response = reader.readLine();
+
+                System.out.println(response);
+
+            }
 
         } catch (IOException e) {
 
-            System.err.println("Unable to connect to the server.");
             e.printStackTrace();
 
         }
